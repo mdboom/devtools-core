@@ -131,6 +131,17 @@ function nodeIsMissingArguments(item: Node) : boolean {
   return !nodeHasChildren(item) && value && value.missingArguments;
 }
 
+function nodeIsUnavailable(item: Node) : boolean {
+  let itemValue = getValue(item);
+  const unavailable =
+    nodeIsPrimitive(item) &&
+    itemValue &&
+    itemValue.hasOwnProperty &&
+    itemValue.hasOwnProperty("unavailable");
+
+  return unavailable || nodeIsMissingArguments(item);
+}
+
 function nodeHasProperties(item: Node) : boolean {
   return !nodeHasChildren(item) && nodeIsObject(item);
 }
@@ -817,6 +828,7 @@ module.exports = {
   nodeIsUninitializedBinding,
   nodeIsUnmappedBinding,
   nodeIsUnscopedBinding,
+  nodeIsUnavailable,
   nodeIsWindow,
   nodeNeedsNumericalBuckets,
   nodeSupportsNumericalBucketing,
