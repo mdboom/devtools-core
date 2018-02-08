@@ -385,7 +385,8 @@ class ObjectInspector extends Component {
         onClick: e => {
           e.stopPropagation();
           const selection = getSelection();
-          if (selection && selection.toString()) {
+          // If the user selected text, bail out.
+          if (selection && selection.type === "Range") {
             return;
           }
           if (isPrimitive === false) {
@@ -411,6 +412,13 @@ class ObjectInspector extends Component {
             onClick: onLabelClick
               ? event => {
                 event.stopPropagation();
+
+                const selection = getSelection();
+                // If the user selected text, bail out.
+                if (selection && selection.type === "Range") {
+                  return;
+                }
+
                 onLabelClick(item, {
                   depth,
                   focused,
